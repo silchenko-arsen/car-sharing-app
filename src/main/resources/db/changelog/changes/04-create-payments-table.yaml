@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-payments-table
+      author: silchenko-arsen
+      changes:
+        - createTable:
+            tableName: payments
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rental_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: session_url
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: session_id
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: amount
+                  type: DECIMAL(19, 2)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: payments
+            baseColumnNames: [rental_id]
+            referencedTableName: rentals
+            referencedColumnNames: [id]
+            constraintName: fk_payments_rental
+            onDelete: CASCADE
