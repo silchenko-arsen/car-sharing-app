@@ -39,8 +39,3 @@ databaseChangeLog:
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
-              - column:
-                  name: telegram_chat_id
-                  type: BIGINT
-                  constraints:
-                    nullable: true
