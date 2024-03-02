@@ -7,6 +7,7 @@ import com.example.carsharingapp.dto.user.UserRegistrationResponseDto;
 import com.example.carsharingapp.exception.RegistrationException;
 import com.example.carsharingapp.security.AuthenticationService;
 import com.example.carsharingapp.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +22,8 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public UserRegistrationResponseDto registerUser(
-            @RequestBody UserRegistrationRequestDto requestDto) throws RegistrationException {
+    public UserRegistrationResponseDto register(@Valid @RequestBody
+                UserRegistrationRequestDto requestDto) throws RegistrationException {
         return userService.register(requestDto);
     }
 
