@@ -2,7 +2,10 @@ package com.example.carsharingapp.service.impl;
 
 import com.example.carsharingapp.dto.user.UserRegistrationRequestDto;
 import com.example.carsharingapp.dto.user.UserRegistrationResponseDto;
+import com.example.carsharingapp.dto.user.UserUpdateRequestDto;
+import com.example.carsharingapp.dto.user.UserUpdateResponseDto;
 import com.example.carsharingapp.exception.RegistrationException;
+import com.example.carsharingapp.exception.UserNotFoundException;
 import com.example.carsharingapp.mapper.UserMapper;
 import com.example.carsharingapp.model.User;
 import com.example.carsharingapp.repository.UserRepository;
@@ -30,7 +33,37 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(requestDto.getFirstName());
         user.setLastName(requestDto.getLastName());
         user.setRole(User.Role.CUSTOMER);
-        User savedUser = userRepository.save(user);
-        return userMapper.toUserResponse(savedUser);
+        return userMapper.toUserResponse(userRepository.save(user));
+    }
+
+    @Override
+    public UserUpdateResponseDto updateRole(Long id, User.Role newRole) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+        user.setRole(newRole);
+        return userMapper.toUserUpdateResponse(userRepository.save(user));
+    }
+
+    @Override
+    public UserUpdateResponseDto getMyProfileInfo(String email) {
+        User currentUser = userRepository
+                .findByEmail(email)
+                .orElseThrow(()
+                        -> new UserNotFoundException(email));
+        return userMapper.toUserUpdateResponse(currentUser);
+    }
+
+    @Override
+    public UserUpdateResponseDto updateMyProfileInfo(UserUpdateRequestDto updatedUser,
+                                                     String email) {
+        User currentUser = userRepository
+                .findByEmail(email)
+                .orElseThrow(()
+                        -> new UserNotFoundException(email));
+        currentUser.setFirstName(updatedUser.getFirstName());
+        currentUser.setLastName(updatedUser.getLastName());
+        currentUser.setEmail(updatedUser.getEmail());
+        currentUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        return userMapper.toUserUpdateResponse(userRepository.save(currentUser));
     }
 }
