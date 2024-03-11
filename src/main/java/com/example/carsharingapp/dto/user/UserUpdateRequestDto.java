@@ -10,7 +10,7 @@ import lombok.Data;
 @FieldMatch(first = "password", second = "repeatPassword", message = "Passwords must match")
 public class UserUpdateRequestDto {
     @NotBlank
-    @Email
+    @Email(message = "Email is wrong")
     private String email;
     @NotBlank
     @Size(min = 8, max = 100)
