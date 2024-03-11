@@ -26,8 +26,6 @@ databaseChangeLog:
               - column:
                   name: type
                   type: VARCHAR(255)
-                  constraints:
-                    nullable: false
               - column:
                   name: inventory
                   type: INT

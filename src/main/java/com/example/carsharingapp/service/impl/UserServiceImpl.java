@@ -4,8 +4,8 @@ import com.example.carsharingapp.dto.user.UserRegistrationRequestDto;
 import com.example.carsharingapp.dto.user.UserRegistrationResponseDto;
 import com.example.carsharingapp.dto.user.UserUpdateRequestDto;
 import com.example.carsharingapp.dto.user.UserUpdateResponseDto;
+import com.example.carsharingapp.exception.EntityNotFoundException;
 import com.example.carsharingapp.exception.RegistrationException;
-import com.example.carsharingapp.exception.UserNotFoundException;
 import com.example.carsharingapp.mapper.UserMapper;
 import com.example.carsharingapp.model.User;
 import com.example.carsharingapp.repository.UserRepository;
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserUpdateResponseDto updateRole(Long id, User.Role newRole) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException("Can't find user by id" + id));
         user.setRole(newRole);
         return userMapper.toUserUpdateResponse(userRepository.save(user));
     }
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         User currentUser = userRepository
                 .findByEmail(email)
                 .orElseThrow(()
-                        -> new UserNotFoundException(email));
+                        -> new EntityNotFoundException("Can't find user by email" + email));
         return userMapper.toUserUpdateResponse(currentUser);
     }
 
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         User currentUser = userRepository
                 .findByEmail(email)
                 .orElseThrow(()
-                        -> new UserNotFoundException(email));
+                        -> new EntityNotFoundException("Can't find user by email" + email));
         currentUser.setFirstName(updatedUser.getFirstName());
         currentUser.setLastName(updatedUser.getLastName());
         currentUser.setEmail(updatedUser.getEmail());
