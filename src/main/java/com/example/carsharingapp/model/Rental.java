@@ -27,7 +27,6 @@ public class Rental {
     private LocalDate rentalDate;
     @Column(nullable = false, name = "return_date")
     private LocalDate returnDate;
-    @Column(nullable = false, name = "actual_return_date")
     private LocalDate actualReturnDate;
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -39,4 +38,6 @@ public class Rental {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive;
 }

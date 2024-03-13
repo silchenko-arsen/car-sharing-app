@@ -27,7 +27,7 @@ public class CarController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('MANAGER')")
-    public CarDto addCar(@RequestBody CarDto car) {
+    public CarDto addCar(@RequestBody @Valid CarDto car) {
         return carService.add(car);
     }
 
